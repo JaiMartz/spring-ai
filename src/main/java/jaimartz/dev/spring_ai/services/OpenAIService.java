@@ -6,9 +6,11 @@ import jaimartz.dev.spring_ai.model.Question;
 
 public interface OpenAIService {
 
-    String getCapital(GetCapitalRequest stateOrCountry);
+    Answer getCapital(GetCapitalRequest stateOrCountry);
 
     Answer getAnswer(Question question);
 
     String getAnswer(String question);
+
+    Answer getCapitalWithInfo(GetCapitalRequest getCapitalRequest);
 }
