@@ -1,12 +1,7 @@
 package jaimartz.dev.spring_ai.services;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jaimartz.dev.spring_ai.model.Answer;
-import jaimartz.dev.spring_ai.model.GetCapitalRequest;
-import jaimartz.dev.spring_ai.model.GetCapitalResponse;
-import jaimartz.dev.spring_ai.model.Question;
+import jaimartz.dev.spring_ai.model.*;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.prompt.Prompt;
@@ -39,12 +34,19 @@ public class OpenAIServiceImpl implements OpenAIService{
 
 
     @Override
-    public Answer getCapitalWithInfo(GetCapitalRequest getCapitalRequest) {
+    public GetCapitalWithInfoResponse getCapitalWithInfo(GetCapitalRequest getCapitalRequest) {
+        BeanOutputConverter<GetCapitalWithInfoResponse> converter = new BeanOutputConverter<>(GetCapitalWithInfoResponse.class);
+        String format = converter.getFormat();
+        System.out.println("Format: \n" + format);
+
         PromptTemplate promptTemplate = new PromptTemplate(getCapitalWithInfoPrompt);
-        Prompt prompt = promptTemplate.create(Map.of("stateOrCountry", getCapitalRequest.stateOrCountry()));
+        Prompt prompt = promptTemplate.create(Map.of(
+                "stateOrCountry", getCapitalRequest.stateOrCountry(),
+                "format", format
+        ));
 
         ChatResponse response = chatModel.call(prompt);
-        return new Answer(response.getResult().getOutput().getText());
+        return converter.convert(response.getResult().getOutput().getText());
     }
 
     @Override

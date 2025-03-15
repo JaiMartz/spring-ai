@@ -1,9 +1,6 @@
 package jaimartz.dev.spring_ai.services;
 
-import jaimartz.dev.spring_ai.model.Answer;
-import jaimartz.dev.spring_ai.model.GetCapitalRequest;
-import jaimartz.dev.spring_ai.model.GetCapitalResponse;
-import jaimartz.dev.spring_ai.model.Question;
+import jaimartz.dev.spring_ai.model.*;
 
 public interface OpenAIService {
 
@@ -13,5 +10,5 @@ public interface OpenAIService {
 
     String getAnswer(String question);
 
-    Answer getCapitalWithInfo(GetCapitalRequest getCapitalRequest);
+    GetCapitalWithInfoResponse getCapitalWithInfo(GetCapitalRequest getCapitalRequest);
 }
